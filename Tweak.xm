@@ -8,21 +8,23 @@
 @property (nonatomic,retain) UIImageView* artworkView;
 @end
 
-static MPMusicPlayerController *myPlayer = nil;
-static NSNotificationCenter *notificationCenter = nil;
+static MPMusicPlayerController* myPlayer = nil;
+static NSNotificationCenter* notificationCenter = nil;
 static SBLockScreenView* lockScreenView = nil;
 static _NowPlayingArtView* musicArtworkView = nil;
+static bool viewIsAnimating = NO;
 typedef void(^ViewBlock)(UIView* view, BOOL* stop);
 
 @interface UIView (ViewExtensions)
--(void) loopViewHierarchy:(ViewBlock) block;
+- (void) loopViewHierarchy:(ViewBlock) block;
 @end
 
 @implementation UIView (ViewExtensions)
 - (void) loopViewHierarchy:(ViewBlock) block 
 {
     BOOL stop = NO;
-    if (block) {
+    if (block) 
+    {
         block(self, &stop);
     }
     if (!stop) 
@@ -40,65 +42,52 @@ typedef void(^ViewBlock)(UIView* view, BOOL* stop);
 %new
 - (void)getTrackDescription:(id)notification 
 {
+	NSLog(@"Breakpoint 1");
 	if(musicArtworkView == nil && lockScreenView.scrollView != nil)
 	{
+		NSLog(@"Breakpoint 2");
 		[lockScreenView.scrollView loopViewHierarchy:^(UIView* view, BOOL* stop) 
 		{
 		    if ([view isKindOfClass:[%c(_NowPlayingArtView) class]]) 
 		    {
 		        /// use the view
+		        NSLog(@"Breakpoint 3");
 		        musicArtworkView = (_NowPlayingArtView *)view;
 		        *stop = YES;
 		    }
 		}];
 	}
-	if(musicArtworkView && musicArtworkView.artworkView)
+	if(musicArtworkView && musicArtworkView.artworkView && !viewIsAnimating)
 	{
-		// musicArtworkView.artworkView.alpha = 0.0;
-		// [UIView animateWithDuration:1.0
-		// 			delay:0.0
-		// 		options: UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionTransitionFlipFromRight
-		// 			animations:
-		// 			^{
-		// 				musicArtworkView.artworkView.alpha = 1.0;
-		// 			}
-		// 			completion:nil];
+		NSLog(@"Breakpoint 4");
     	MPMediaItem* nowPlayingItem = myPlayer.nowPlayingItem;
     	MPMediaItemArtwork* artwork = [nowPlayingItem valueForProperty:MPMediaItemPropertyArtwork];
     	UIImageView* currentArtwork = [[UIImageView alloc] initWithFrame:musicArtworkView.artworkView.frame];
-    	currentArtwork.contentMode = UIViewContentModeScaleAspectFit;
-    	if (artwork != nil) {
+    	if (artwork != nil) 
+    	{
+    		NSLog(@"Breakpoint 5");
         	currentArtwork.image = [artwork imageWithSize:musicArtworkView.artworkView.frame.size];
+        	currentArtwork.contentMode = UIViewContentModeScaleAspectFit;
     	}
-
-		// [UIView transitionWithView:musicArtworkView.artworkView
-		//                   duration:1.0
-		//                    options:UIViewAnimationOptionTransitionFlipFromRight
-		//                 animations:^{
-		//                     //  Set the new image
-		//                     //  Since its done in animation block, the change will be animated
-		//                     musicArtworkView.artworkView.image = currentArtwork;
-		//                 } completion:^(BOOL finished) {
-		//                     //  Do whatever when the animation is finished
-		//                 }];
-
-  [UIView transitionFromView:musicArtworkView.artworkView
-                        toView:currentArtwork
-                      duration:1.0
-                       options:UIViewAnimationOptionTransitionFlipFromRight |
-                               UIViewAnimationOptionAllowUserInteraction
-                    completion:^(BOOL finished) { musicArtworkView.artworkView = currentArtwork; }];
-		// [UIView transitionWithView:musicArtworkView 
-		// 	duration:1.0 
-		// 	options:(UIViewAnimationOptionTransitionFlipFromBottom) 
-		// 	animations:^{ musicArtworkView.artworkView.image = currentArtwork; } completion:^(BOOL finished) {}];
-
-		// UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Song Changed" 
-		//                                                 message:nil
-		//                                                 delegate:nil 
-		//                                                 cancelButtonTitle:@"OK" 
-		//                                                 otherButtonTitles:nil];
-		// [alert show];
+		if(currentArtwork.image)
+		{
+			NSLog(@"Breakpoint 6");
+			[musicArtworkView.layer removeAllAnimations];
+			[UIView transitionWithView:musicArtworkView 
+								duration:0.75 
+								options:(UIViewAnimationOptionTransitionFlipFromBottom) 
+								animations:^{ viewIsAnimating = YES; musicArtworkView.artworkView = currentArtwork; } 
+								completion:^(BOOL finished) { if (finished) viewIsAnimating = NO; }];
+		}
+		else
+		{
+			musicArtworkView.artworkView.image = nil;
+		}
+	} 
+	else
+	{
+		[musicArtworkView.layer removeAllAnimations];
+		viewIsAnimating = NO;
 	}
 }
 
@@ -106,27 +95,29 @@ typedef void(^ViewBlock)(UIView* view, BOOL* stop);
 {
 	%orig;
 
+	NSLog(@"Breakpoint 7");
     // creating simple audio player
     myPlayer = [MPMusicPlayerController systemMusicPlayer];
 
     notificationCenter = [NSNotificationCenter defaultCenter];
 
-    [notificationCenter addObserver:self
-                                selector:@selector(getTrackDescription:)
-                                    name:MPMusicPlayerControllerNowPlayingItemDidChangeNotification
-                                    object:myPlayer];
+	[notificationCenter addObserver:self
+	                    selector:@selector(getTrackDescription:)
+	                        name:MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+	                        object:myPlayer];
 
     [myPlayer beginGeneratingPlaybackNotifications];
-
 }
 
 - (void)viewDidDisappear:(id)arg1
 {
 	%orig;
 	
-    [notificationCenter removeObserver:self
-                                name:MPMusicPlayerControllerNowPlayingItemDidChangeNotification
-                                object:myPlayer];
+	NSLog(@"Breakpoint 8");
+
+	[notificationCenter removeObserver:self
+	                        	name:MPMusicPlayerControllerNowPlayingItemDidChangeNotification
+	                        	object:myPlayer];
 
     [myPlayer endGeneratingPlaybackNotifications];
 
@@ -134,6 +125,11 @@ typedef void(^ViewBlock)(UIView* view, BOOL* stop);
 
     notificationCenter = nil;
 
+    viewIsAnimating = NO;
+
+	lockScreenView = nil;
+	
+	musicArtworkView = nil;
 }
 
 %end

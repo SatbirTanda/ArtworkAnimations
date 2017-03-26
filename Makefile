@@ -4,9 +4,8 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = animovani
 animovani_FILES = Tweak.xm
-animovani_FRAMEWORKS = UIKit MediaPlayer
-animovani_PRIVATE_FRAMEWORKS = UIKit MediaPlayer
-animovani_CFLAGS = -fobjc-arc
+animovani_FRAMEWORKS = UIKit MediaPlayer QuartzCore
+animovani_CFLAGS = "-Wno-error"
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
