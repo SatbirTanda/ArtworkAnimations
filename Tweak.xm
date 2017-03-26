@@ -1,41 +1,4 @@
-#import <MediaPlayer/MPMusicPlayerController.h>
-
-@interface SBLockScreenView
-@property(readonly, retain, nonatomic) UIScrollView *scrollView;
-@end
-
-@interface _NowPlayingArtView: UIView
-@property (nonatomic,retain) UIImageView* artworkView;
-@end
-
-static MPMusicPlayerController* myPlayer = nil;
-static NSNotificationCenter* notificationCenter = nil;
-static SBLockScreenView* lockScreenView = nil;
-static _NowPlayingArtView* musicArtworkView = nil;
-static bool viewIsAnimating = NO;
-typedef void(^ViewBlock)(UIView* view, BOOL* stop);
-
-@interface UIView (ViewExtensions)
-- (void) loopViewHierarchy:(ViewBlock) block;
-@end
-
-@implementation UIView (ViewExtensions)
-- (void) loopViewHierarchy:(ViewBlock) block 
-{
-    BOOL stop = NO;
-    if (block) 
-    {
-        block(self, &stop);
-    }
-    if (!stop) 
-    {
-        for (UIView* subview in self.subviews) 
-        {
-            [subview loopViewHierarchy:block];
-        }
-    }
-}
-@end
+#import "Animovani.h"
 
 %hook SBLockScreenViewController
 
@@ -57,7 +20,7 @@ typedef void(^ViewBlock)(UIView* view, BOOL* stop);
 		    }
 		}];
 	}
-	if(musicArtworkView && musicArtworkView.artworkView && !viewIsAnimating)
+	if(musicArtworkView && musicArtworkView.artworkView && !viewIsAnimating && !blurViewIsAnimating && blurView != nil)
 	{
 		NSLog(@"Breakpoint 4");
     	MPMediaItem* nowPlayingItem = myPlayer.nowPlayingItem;
@@ -72,6 +35,12 @@ typedef void(^ViewBlock)(UIView* view, BOOL* stop);
 		if(currentArtwork.image)
 		{
 			NSLog(@"Breakpoint 6");
+			[blurView.layer removeAllAnimations];
+			[UIView transitionWithView:blurView 
+					duration:0.75 
+					options:(UIViewAnimationOptionTransitionCrossDissolve) 
+					animations:^{ blurViewIsAnimating = YES; [blurView _setImage:currentArtwork.image style:0 notify: NO]; } 
+					completion:^(BOOL finished) { if (finished) blurViewIsAnimating = NO; }];
 			[musicArtworkView.layer removeAllAnimations];
 			[UIView transitionWithView:musicArtworkView 
 								duration:0.75 
@@ -82,10 +51,13 @@ typedef void(^ViewBlock)(UIView* view, BOOL* stop);
 		else
 		{
 			musicArtworkView.artworkView.image = nil;
+			[blurView _setImage:nil style:0 notify: NO];
 		}
 	} 
 	else
 	{
+		[blurView.layer removeAllAnimations];
+		blurViewIsAnimating = NO;
 		[musicArtworkView.layer removeAllAnimations];
 		viewIsAnimating = NO;
 	}
@@ -127,9 +99,13 @@ typedef void(^ViewBlock)(UIView* view, BOOL* stop);
 
     viewIsAnimating = NO;
 
+	blurViewIsAnimating = NO;
+
 	lockScreenView = nil;
 	
 	musicArtworkView = nil;
+
+	blurView = nil;
 }
 
 %end
@@ -140,6 +116,24 @@ typedef void(^ViewBlock)(UIView* view, BOOL* stop);
 {
 	%orig;
 	lockScreenView = self;
+	NSArray *windows = [UIApplication sharedApplication].windows;
+    for (UIWindow *window in windows) 
+    {
+        if ([NSStringFromClass([window class]) isEqualToString:@"SBSecureWindow"]) 
+        {
+			[window loopViewHierarchy:^(UIView* view, BOOL* stop) 
+			{
+			    if ([view isKindOfClass:[%c(_SBFakeBlurView) class]]) 
+			    {
+			        /// use the view
+			        NSLog(@"FOUND WALLPAPER");
+			        blurView = (_SBFakeBlurView *)view;
+			        *stop = YES;
+			    }
+			}];
+			break;
+        }
+    }
 }
 
 %end
