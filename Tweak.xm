@@ -36,16 +36,18 @@
 		{
 			NSLog(@"Breakpoint 6");
 			[blurView.layer removeAllAnimations];
+			blurViewIsAnimating = YES;
 			[UIView transitionWithView:blurView 
 					duration:0.75 
 					options:(UIViewAnimationOptionTransitionCrossDissolve) 
-					animations:^{ blurViewIsAnimating = YES; [blurView _setImage:currentArtwork.image style:0 notify: NO]; } 
+					animations:^{ [blurView _setImage:currentArtwork.image style:0 notify: NO]; } 
 					completion:^(BOOL finished) { if (finished) blurViewIsAnimating = NO; }];
 			[musicArtworkView.layer removeAllAnimations];
+			viewIsAnimating = YES;
 			[UIView transitionWithView:musicArtworkView 
 								duration:0.75 
 								options:(UIViewAnimationOptionTransitionFlipFromBottom) 
-								animations:^{ viewIsAnimating = YES; musicArtworkView.artworkView = currentArtwork; } 
+								animations:^{ musicArtworkView.artworkView = currentArtwork; } 
 								completion:^(BOOL finished) { if (finished) viewIsAnimating = NO; }];
 		}
 		else
