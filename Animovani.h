@@ -1,7 +1,19 @@
 #import <MediaPlayer/MPMusicPlayerController.h>
 
+@interface SBLockScreenViewController
+// NEW
+- (BOOL)isTweakEnabled;
+- (BOOL)isBackgroundAnimationEnabled;
+- (NSString *)getAnimationKey;
+- (int)currentAnimation;
+- (void)getTrackDescription:(id)notification;
+@end
+
 @interface SBLockScreenView
 @property(readonly, retain, nonatomic) UIScrollView *scrollView;
+// NEW
+- (BOOL)isTweakEnabled;
+- (BOOL)isBackgroundAnimationEnabled;
 @end
 
 @interface _NowPlayingArtView: UIView

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Enable or Disable Tweak</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.sst1337.animovani</string>
+			<key>key</key>
+			<string>OnOff</string>
+			<key>label</key>
+			<string>Enabled</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Enable or Disable Background Animation</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<true/>
+			<key>defaults</key>
+			<string>com.sst1337.animovani</string>
+			<key>key</key>
+			<string>Background</string>
+			<key>label</key>
+			<string>Enabled</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Set your animation</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>default</key>
+			<string>Original</string>
+			<key>defaults</key>
+			<string>com.sst1337.animovani</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>key</key>
+			<string>Animation</string>
+			<key>label</key>
+			<string>Random</string>
+			<key>validTitles</key>
+			<array>
+				<string>Random</string>
+				<string>Flip Bottom</string>
+				<string>Flip Top</string>
+				<string>Flip Right</string>
+				<string>Flip Left</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<string>Random</string>
+				<string>Flip Bottom</string>
+				<string>Flip Top</string>
+				<string>Flip Right</string>
+				<string>Flip Left</string>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Report Bugs or Contact:</string>
+		</dict>
+		<dict>
+			<key>action</key>
+			<string>linkToMyTwitter</string>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Developer (@sst1337) on Twitter</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>© 2017 sst1337</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Artwork by Nikita Golubev</string>
+		</dict>
+	</array>
+	<key>title</key>
+	<string>Animovani</string>
+</dict>
+</plist>
