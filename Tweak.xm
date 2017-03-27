@@ -11,6 +11,7 @@
 #define FLIP_LEFT @"Flip Left"
 #define FLIP_TOP @"Flip Top"
 #define FLIP_BOTTOM @"Flip Bottom"
+#define DISSOVLE @"Dissolve"
 #define RANDOM @"Random"
 
 %hook SBLockScreenViewController
@@ -47,10 +48,11 @@
 	else if([key isEqualToString: FLIP_LEFT]) return 1 << 20;
 	else if([key isEqualToString: FLIP_TOP]) return 6 << 20;
 	else if([key isEqualToString: FLIP_BOTTOM]) return 7 << 20;
+	else if([key isEqualToString: DISSOVLE]) return 5 << 20;
 	else
 	{
-		int animationValues[4] = {2 << 20, 1 << 20, 6 << 20, 7 << 20};
-		int randomIndex = arc4random() % 4;
+		int animationValues[5] = {2 << 20, 1 << 20, 6 << 20, 7 << 20, 5 << 20};
+		int randomIndex = arc4random() % 5;
 		return animationValues[randomIndex];
 	}
 }
@@ -88,7 +90,7 @@
 		if([self isBackgroundAnimationEnabled])
 		{
 			NSLog(@"Breakpoint 10");
-			if(blurView && !blurViewIsAnimating)
+			if([self isBackgroundAnimationEnabled] && blurView && !blurViewIsAnimating)
 			{
 				if(currentArtwork.image)
 				{
@@ -208,9 +210,9 @@
 - (void)_layoutScrollView
 {
 	%orig;
+	lockScreenView = self;
 	if([self isTweakEnabled] && [self isBackgroundAnimationEnabled])
 	{
-		lockScreenView = self;
 		NSArray *windows = [UIApplication sharedApplication].windows;
 	    for (UIWindow *window in windows) 
 	    {

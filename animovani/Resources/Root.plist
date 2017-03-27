@@ -58,7 +58,7 @@
 			<key>key</key>
 			<string>Animation</string>
 			<key>label</key>
-			<string>Random</string>
+			<string>Animation</string>
 			<key>validTitles</key>
 			<array>
 				<string>Random</string>
@@ -66,6 +66,7 @@
 				<string>Flip Top</string>
 				<string>Flip Right</string>
 				<string>Flip Left</string>
+				<string>Dissolve</string>
 			</array>
 			<key>validValues</key>
 			<array>
@@ -74,6 +75,7 @@
 				<string>Flip Top</string>
 				<string>Flip Right</string>
 				<string>Flip Left</string>
+				<string>Dissolve</string>
 			</array>
 		</dict>
 		<dict>
