@@ -20,6 +20,21 @@
 @property (nonatomic,retain) UIImageView* artworkView;
 @end
 
+@interface SBUIController: UIViewController
++ (id)sharedInstance;
+- (BOOL)isTweakEnabled;
+- (BOOL)isBackgroundAnimationEnabled;
+- (NSString *)getAnimationKey;
+- (int)currentAnimation;
+- (void)currentSongChanged:(NSNotification *)notification;
+- (void)updateLockscreenArtwork;
+@end
+
+@interface SBMediaController: UIViewController
++ (id)sharedInstance;
+- (id)_nowPlayingInfo;
+@end
+
 
 @interface _SBFakeBlurView : UIView
 - (void)_setImage:(id)arg1 style:(long long)arg2 notify:(_Bool)arg3;
@@ -55,3 +70,23 @@ typedef void(^ViewBlock)(UIView* view, BOOL* stop);
     }
 }
 @end
+
+@interface SBDashBoardMediaArtworkViewController : UIViewController
+- (void)getTrackDescription:(id)notification;
+- (BOOL)isTweakEnabled;
+- (BOOL)isBackgroundAnimationEnabled;
+- (NSString *)getAnimationKey;
+- (int)currentAnimation;
+@end
+
+@interface MPUNowPlayingArtworkView : UIView
+@end
+
+@interface SBFStaticWallpaperImageView : UIImageView
+@end
+
+static MPUNowPlayingArtworkView *artworkView = nil;
+static SBFStaticWallpaperImageView *wallpaper = nil;
+static UIImage *originalImage = nil;
+static bool artworkIsAnimating = NO;
+static bool wallPaperIsAnimating = NO;

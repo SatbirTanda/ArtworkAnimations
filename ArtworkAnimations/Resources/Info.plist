@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>Animovani</string>
+	<string>ArtworkAnimations</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.sst1337.animovani</string>
+	<string>com.sst1337.ArtworkAnimations</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

@@ -1,9 +1,9 @@
-Package: com.satbirtanda.animovani
-Name: animovani
+Package: com.sst1337.ArtworkAnimations
+Name: ArtworkAnimations10
 Depends: mobilesubstrate
-Version: 0.0.1
+Version: 2.0.0
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
-Maintainer: Satbir Tanda
-Author: Satbir Tanda
+Description: Animate Your Lockscreen Album Art!
+Maintainer: sst1337
+Author: sst1337
 Section: Tweaks

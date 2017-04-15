@@ -5,17 +5,17 @@
 	<key>entry</key>
 	<dict>
 		<key>bundle</key>
-		<string>Animovani</string>
+		<string>ArtworkAnimations</string>
 		<key>cell</key>
 		<string>PSLinkCell</string>
 		<key>detail</key>
 		<string>SSTRootListController</string>
 		<key>icon</key>
-		<string>Animovani.png</string>
+		<string>ArtworkAnimations.png</string>
 		<key>isController</key>
 		<true/>
 		<key>label</key>
-		<string>Animovani</string>
+		<string>ArtworkAnimations</string>
 	</dict>
 </dict>
 </plist>

@@ -16,7 +16,7 @@
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
-			<string>com.sst1337.animovani</string>
+			<string>com.sst1337.ArtworkAnimations</string>
 			<key>key</key>
 			<string>OnOff</string>
 			<key>label</key>
@@ -34,7 +34,7 @@
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
-			<string>com.sst1337.animovani</string>
+			<string>com.sst1337.ArtworkAnimations</string>
 			<key>key</key>
 			<string>Background</string>
 			<key>label</key>
@@ -52,7 +52,7 @@
 			<key>default</key>
 			<string>Original</string>
 			<key>defaults</key>
-			<string>com.sst1337.animovani</string>
+			<string>com.sst1337.ArtworkAnimations</string>
 			<key>detail</key>
 			<string>PSListItemsController</string>
 			<key>key</key>
@@ -66,6 +66,8 @@
 				<string>Flip Top</string>
 				<string>Flip Right</string>
 				<string>Flip Left</string>
+				<string>Curl Up</string>
+				<string>Curl Down</string>
 				<string>Dissolve</string>
 			</array>
 			<key>validValues</key>
@@ -75,6 +77,8 @@
 				<string>Flip Top</string>
 				<string>Flip Right</string>
 				<string>Flip Left</string>
+				<string>Curl Up</string>
+				<string>Curl Down</string>
 				<string>Dissolve</string>
 			</array>
 		</dict>
@@ -106,6 +110,6 @@
 		</dict>
 	</array>
 	<key>title</key>
-	<string>Animovani</string>
+	<string>ArtworkAnimations</string>
 </dict>
 </plist>
